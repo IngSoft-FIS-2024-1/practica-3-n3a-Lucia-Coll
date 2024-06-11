@@ -1,14 +1,14 @@
 class Book {
-
   #title;
   #author;
   #pages;
   #words;
   
-  constructor(title, author, pages) {
+  constructor(title, author, pages, words = 0) {
     this.setTitle(title);
     this.setAuthor(author);
     this.setPages(pages);
+    this.setWords(words);
   }
 
   getTitle() {
@@ -24,52 +24,46 @@ class Book {
   }
 
   getWords() {
-    // TODO
+    return this.#words;
   }
 
   setTitle(title) {
-    if (typeof (title) !== 'string') {
-      throw new Error();
+    if (typeof title !== 'string' || title.trim().length === 0) {
+      throw new Error('Invalid title');
     }
-    title = title.trim();
-    if (title.length === 0) {
-      throw new Error();
-    }
-    this.#title = title;
+    this.#title = title.trim();
   }
 
   setAuthor(author) {
-    if (typeof (author) !== 'string') {
-      throw new Error()
+    if (typeof author !== 'string') {
+      throw new Error('Invalid author');
     }
-    author = author.trim();
-    if (author.length === 0) {
-      author = "Anónimo";
-    }
-    this.#author = author;
+    this.#author = author.trim() || 'Anónimo';
   }
 
   setPages(pages) {
-    if (typeof (pages) !== 'number' || isNaN(pages)) {
-      throw new Error()
+    if (typeof pages !== 'number' || isNaN(pages) || pages < 0) {
+      throw new Error('Invalid pages');
     }
-    if (pages < 1) {
-      throw new Error()
-    }
-    pages = Math.trunc(pages);
-    this.#pages = pages;
+    this.#pages = Math.trunc(pages);
   }
 
-  setWords() {
-    // TODO
+  setWords(words) {
+    if (typeof words !== 'number' || isNaN(words) || words < 0) {
+      throw new Error('Invalid words');
+    }
+    this.#words = words;
   }
 
   wordsPerPage() {
-    // TODO
+    if (this.#pages === 0) {
+      return 0;
+    }
+    return this.#words / this.#pages;
   }
 
   toString() {
-    return `Título: ${this.#title} Autor: ${this.#author} Páginas: ${this.#pages}`;
+    return `Título: ${this.#title} Autor: ${this.#author} Páginas: ${this.#pages} Palabras: ${this.#words}`;
   }
 }
 
